@@ -23,24 +23,24 @@ class Factory {
     this.airbags = true;
     this.abs = true;
     this.warranty = '60,000 miles / 3 years';
-  this.masssBuild = function(quantity, options) {
-    return 'Building ' + quantity + color + trim + models + '\'s';
+  this.massBuild = function(quantity) {
+    return `Building ${quantity} ${this.color} ${this.trim} ${this.model}'s`;
   }
   this.customerBuild = function(color, options) {
-    return 'Building one ' + color + trim + model + 'with the following options: ' + options;
+    return `Building one ${this.color} ${this.trim} ${this.model} with the following options: ${options}`;
   }
 }
 }
 
 // CREATE A SUB-CLASS CALLED CAR
 // It should extend from Factory.
-// The constructor should have the following properties: model, doors, color, enginetype, transmission, trim, wheelstrim, audio, seatstrim, moonroof. The values should be specified when creating an instance of Car.
+// The constructor should have the following properties: model, doors, ${color}, enginetype, transmission, trim, wheelstrim, audio, seatstrim, moonroof. The values should be specified when creating an instance of Car.
 // It should specifically inherit the warranty property from Factory so we can modify it.
 // Car should also have the following additional properties: enginesize (4), navigation (true), backupcamera (true), warranty (100,000 miles / 5 years)
 // Write your code below:
 class Car extends Factory {
-  constructor(warranty, model, doors, color, enginetype, transmission, trim, wheelstrim, audio, seatstrim, moonroof){
-    this.warranty = '100,000 miles / 5 years';
+  constructor(model, doors, color, enginetype, transmission, trim, wheelstrim, audio, seatstrim, moonroof){
+    super();
     this.model = model;
     this.doors = doors;
     this.color = color;
@@ -54,9 +54,9 @@ class Car extends Factory {
     this.enginesize = 4;
     this.navigation = true;
     this.backupcamera = true;
+    this.warranty = '100,000 miles / 5 years';
   }
 }
-
 
 
 // CREATE A SUB-CLASS CALLED SPORT
@@ -65,7 +65,16 @@ class Car extends Factory {
 // Sports cars should also have the following additional properties: moonroof (false), enginetype (gasoline), convertible (true), doors (2)
 // Write your code below:
 
-
+class Sport extends Car {
+  constructor(model, trim, transmission, top, color, seatstrim, audio, wheelstrim, doors, enginetype, moonroof, warranty) {
+    super(model, doors, color, enginetype, transmission, trim, wheelstrim, audio, seatstrim);
+    this.moonroof = false;
+    this.enginetype = 'gasoline';
+    this.convertible = true;
+    this.doors = 2;
+    this.top = top;
+  }
+}
 
 
 // CREATE A SUB-CLASS CALLED TRUCK
@@ -76,8 +85,22 @@ class Car extends Factory {
 // It should also inherit the warranty property so we can extend it to: 150,000 miles / 6 years.
 // Write your code below:
 
-
-
+class Truck extends Factory {
+  constructor(model, color, enginesize, hitch, trim, bed, navigation, doors) {
+    super();
+    this.model = model;
+    this.color = color;
+    this.enginesize = enginesize;
+    this.hitch = hitch;
+    this.trim = trim;
+    this.bed = bed;
+    this.navigation = navigation;
+    this.warranty = '150,000 miles / 6 years';
+    this.backupcamera = true;
+    this.audio = 'basic';
+    this.doors = doors;
+  }
+}
 
 // LET'S BUILD SOME CARS AND TRUCKS!
 
@@ -86,20 +109,20 @@ class Car extends Factory {
 // The following properties must be specified: model (mazda3), color (red), enginetype (hybrid), transmission (automatic), trim (touring), wheels (base), audio (premium), seats (leather), and moonroof (true)
 
 // Write your 'mazda3' instance below:
-let mazda3 = new Car();
+let mazda3 = new Car('mazda3', 4, 'red', 'hybrid', 'automatic', 'touring', 'base', 'premium', 'leather', true);
+
 
 // Print mazda3. I should have all the above properties.
 // Write your code below:
 
-
+console.log('mazda3', mazda3);
 
 
 
 // Print calling massBuild(), building 35000 cars.
 // It should print: "Building 35000 Red Touring Mazda3's."
 // Write your code below:
-
-
+console.log(mazda3.massBuild(35000));
 
 
 
@@ -108,7 +131,7 @@ let mazda3 = new Car();
 // Write your code below:
 
 
-
+console.log(mazda3.customerBuild('yellow', ['weather package', 'satellite radio', 'rear spoiler']));
 
 
 // MIATA-RF MASS PRODUCTION
@@ -118,13 +141,12 @@ let mazda3 = new Car();
 // Write your 'miataRf' instance below:
 // Write your code below:
 
-
-
+let miata = new Sport('Miata-RF', 'Grand Touring', 'manual', 'hard top', 'red', 'leather', 'premium', 'premium');
 
 
 // Print miataRf. It should have all of the above properties. Plus, the extended warranty.
 // Write your code below:
-
+console.log('miata', miata);
 
 
 
@@ -132,7 +154,7 @@ let mazda3 = new Car();
 // Print miataRf, calling massBuild(), building 15,000
 // It should print: "Building 15000 Red Grand Touring Miata-RF's."
 // Write your code below:
-
+console.log(miata.massBuild(15000));
 
 
 
@@ -141,7 +163,7 @@ let mazda3 = new Car();
 // It should read: "Building one black Grand Touring Miata-RF with the following options: hid headlights, sports suspension, leather steering wheel, heated seats, adaptive cruise control"
 // Write your code below:
 
-
+console.log(miata.customerBuild('black', ['hidden headlights', 'sports suspension', 'leather steering wheel', 'heated seats', 'adaptive cruise control']));
 
 
 // TRAIL BLAZER MASS PRODUCTION
@@ -152,6 +174,7 @@ let mazda3 = new Car();
 // Write your code below:
 
 
+let trailBlazer = new Truck('Trail Blazer', 'blue', 8, true, 'Sport', 'standard', true, 2);
 
 
 
@@ -159,16 +182,18 @@ let mazda3 = new Car();
 // Write your code below:
 
 
-
+console.log(trailBlazer);
 
 // Print trailBlazer, calling massBuid(). It should build 35000 trucks.
 // It should print: "Building 35000 blue Sport Trail Blazer's."
 // Wrint your code below:
 
 
-
+console.log(trailBlazer.massBuild(35000));
 
 
 // Print trailBlazer, calling customerBuild(). It should build a red Trail Blazer with the following options, as an array: seat warmers, tinted windows, fog lamps.
 // It should print: "Building one red Sport Trail Blazer with the following options: seat warmers, tinted windows, fog lamps"
 // Write your code below:
+
+console.log(trailBlazer.customerBuild('red', ['seat warmers', 'tinted windows', 'fog lamps']));
